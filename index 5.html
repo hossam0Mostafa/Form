@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Red Bull Hurghada — Order</title>
+<style>
+  :root{
+    --navy: #0A1024;
+    --navy-2: #121A38;
+    --navy-3: #1B2650;
+    --blue: #2F6BFF;
+    --red: #E11B2C;
+    --gold: #FFC531;
+    --ink: #F4F6FB;
+    --ink-dim: #9AA4C4;
+    --line: rgba(255,255,255,0.08);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1200px 600px at 15% -10%, rgba(47,107,255,0.25), transparent 60%),
+      radial-gradient(900px 500px at 110% 10%, rgba(225,27,44,0.18), transparent 55%),
+      var(--navy);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    min-height:100vh;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .wrap{max-width:560px;margin:0 auto;padding:0 0 150px;}
+
+  header{
+    padding:28px 20px 18px;
+    position:relative;
+    overflow:hidden;
+    border-bottom:1px solid var(--line);
+  }
+  .streak{
+    position:absolute; inset:0;
+    background: linear-gradient(100deg, transparent 40%, var(--gold) 41%, var(--gold) 43%, transparent 44%),
+                linear-gradient(100deg, transparent 47%, var(--red) 48%, var(--red) 50%, transparent 51%),
+                linear-gradient(100deg, transparent 54%, var(--blue) 55%, var(--blue) 57%, transparent 58%);
+    opacity:0.5;
+    pointer-events:none;
+  }
+  .brand{
+    position:relative;
+    display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
+  }
+  .brand h1{
+    font-family:'Arial Black','Helvetica Neue',Arial,sans-serif; font-weight:900;
+    font-size:34px;
+    letter-spacing:0.5px;
+    margin:0;
+    line-height:1;
+    text-transform:uppercase;
+  }
+  .brand h1 span{color:var(--red);}
+  .brand .loc{
+    font-size:13px;
+    color:var(--ink-dim);
+    text-transform:uppercase;
+    letter-spacing:1.5px;
+    font-weight:600;
+  }
+  header p.sub{
+    position:relative;
+    margin:8px 0 0;
+    color:var(--ink-dim);
+    font-size:14.5px;
+    line-height:1.5;
+  }
+
+  .section-label{
+    display:flex; align-items:center; gap:10px;
+    margin:26px 20px 12px;
+    color:var(--ink-dim);
+    font-size:12px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    font-weight:700;
+  }
+  .section-label::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:var(--line);
+  }
+
+  .cooler{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    padding:0 20px;
+  }
+  .can{
+    position:relative;
+    border-radius:16px;
+    background:var(--navy-2);
+    border:1px solid var(--line);
+    padding:14px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    transition:border-color .15s ease;
+  }
+  .can[data-active="true"]{
+    border-color:var(--gold);
+    box-shadow:0 0 0 1px var(--gold) inset, 0 8px 24px -12px var(--gold);
+  }
+  .can-top{display:flex; align-items:center; gap:12px;}
+  .can-icon{flex-shrink:0; display:block;}
+  .can-name{
+    font-size:15px;
+    font-weight:700;
+    line-height:1.25;
+  }
+  .can-tag{
+    font-size:11.5px;
+    color:var(--ink-dim);
+    font-weight:500;
+    margin-top:2px;
+  }
+
+  .units{
+    display:flex;
+    gap:10px;
+  }
+  .unit-group{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .unit-label{
+    font-size:10px;
+    letter-spacing:1.2px;
+    text-transform:uppercase;
+    color:var(--ink-dim);
+    font-weight:700;
+    padding-left:2px;
+  }
+  .stepper{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:var(--navy);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:4px;
+  }
+  .stepper button{
+    width:30px; height:30px;
+    border-radius:8px;
+    border:none;
+    background:transparent;
+    color:var(--ink);
+    font-size:17px;
+    font-weight:700;
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    line-height:1;
+  }
+  .stepper button:active{background:var(--navy-3);}
+  .stepper .qty{
+    font-family:'Arial Black','Helvetica Neue',Arial,sans-serif; font-weight:900;
+    font-size:15px;
+    min-width:20px;
+    text-align:center;
+  }
+
+  .details{
+    padding:0 20px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .field label{
+    display:block;
+    font-size:12px;
+    color:var(--ink-dim);
+    text-transform:uppercase;
+    letter-spacing:1.5px;
+    font-weight:700;
+    margin-bottom:6px;
+  }
+  .field input{
+    width:100%;
+    background:var(--navy-2);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:13px 14px;
+    color:var(--ink);
+    font-size:15px;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  }
+  .field input::placeholder{color:#5B6790;}
+  .field input:focus{outline:2px solid var(--blue); outline-offset:1px;}
+
+  .gps-btn{
+    margin-top:8px;
+    width:100%;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    background:var(--navy-2);
+    border:1px dashed var(--line);
+    border-radius:10px;
+    padding:11px 14px;
+    color:var(--ink);
+    font-size:13.5px;
+    font-weight:600;
+    cursor:pointer;
+  }
+  .gps-btn svg{width:16px; height:16px; color:var(--gold); flex-shrink:0;}
+  .gps-btn:active{background:var(--navy-3);}
+  .gps-btn[data-state="done"]{border-style:solid; border-color:var(--gold);}
+  .gps-status{
+    margin-top:6px;
+    font-size:12px;
+    color:var(--ink-dim);
+    min-height:14px;
+  }
+  .gps-status.ok{color:#8FE0A8;}
+  .gps-status.err{color:#FF8A93;}
+
+  .note{
+    padding:12px 14px;
+    background:rgba(47,107,255,0.08);
+    border:1px solid rgba(47,107,255,0.25);
+    border-radius:10px;
+    font-size:12.5px;
+    color:var(--ink-dim);
+    line-height:1.5;
+  }
+
+  .bar{
+    position:fixed;
+    left:0; right:0; bottom:0;
+    background:linear-gradient(180deg, rgba(10,16,36,0), var(--navy) 18%);
+    padding:18px 16px calc(18px + env(safe-area-inset-bottom));
+    display:flex;
+    justify-content:center;
+  }
+  .bar-inner{
+    max-width:560px;
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .count-pill{
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    min-width:48px; height:52px;
+    border-radius:14px;
+    background:var(--navy-2);
+    border:1px solid var(--line);
+    flex-shrink:0;
+    padding:0 6px;
+  }
+  .count-pill .n{font-family:'Arial Black','Helvetica Neue',Arial,sans-serif; font-weight:900; font-size:17px; line-height:1;}
+  .count-pill .l{font-size:8.5px; color:var(--ink-dim); letter-spacing:0.5px; text-transform:uppercase; margin-top:2px;}
+
+  .send-btn{
+    flex:1;
+    height:52px;
+    border-radius:14px;
+    border:none;
+    background:linear-gradient(95deg, var(--red), #ff4d5e);
+    color:#fff;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    font-weight:800;
+    font-size:14.5px;
+    letter-spacing:0.3px;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    cursor:pointer;
+    box-shadow:0 10px 24px -10px rgba(225,27,44,0.7);
+    transition:transform .12s ease, opacity .12s ease;
+  }
+  .send-btn:disabled{
+    opacity:0.4;
+    box-shadow:none;
+    cursor:not-allowed;
+  }
+  .send-btn:active:not(:disabled){transform:scale(0.98);}
+  .send-btn svg{width:18px; height:18px; flex-shrink:0;}
+
+  .error-msg{
+    padding:0 20px;
+    color:#FF8A93;
+    font-size:12.5px;
+    font-weight:600;
+    display:none;
+  }
+  .error-msg.show{display:block;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="streak"></div>
+    <div class="brand">
+      <h1>Red<span>Bull</span></h1>
+      <span class="loc">Hurghada Delivery</span>
+    </div>
+    <p class="sub">Pick pallets and/or cans for each flavor, add your name and number, then send — your order goes straight to your rep on WhatsApp.</p>
+  </header>
+
+  <div class="section-label">Choose your order</div>
+  <div class="cooler" id="cooler">
+
+    <div class="can" data-id="classic">
+      <div class="can-top">
+        <svg class="can-icon" width="38" height="52" viewBox="0 0 38 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="g-classic" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#5B84D6"/><stop offset="100%" stop-color="#1F3F87"/>
+          </linearGradient></defs>
+          <rect x="4" y="6" width="30" height="42" rx="6" fill="url(#g-classic)" stroke="rgba(255,255,255,0.25)"/>
+          <ellipse cx="19" cy="6" rx="15" ry="3.5" fill="#8FA9DE"/>
+          <ellipse cx="19" cy="48" rx="15" ry="3" fill="#152C63"/>
+          <rect x="4" y="26" width="30" height="2.5" fill="rgba(255,255,255,0.35)"/>
+          <path d="M9 12 L14 34" stroke="#FFC531" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+        </svg>
+        <div>
+          <div class="can-name">Red Bull Classic</div>
+          <div class="can-tag">The original</div>
+        </div>
+      </div>
+      <div class="units">
+        <div class="unit-group" data-unit="pallet">
+          <span class="unit-label">Pallets</span>
+          <div class="stepper">
+            <button type="button" data-action="dec" aria-label="Decrease pallets, Red Bull Classic">−</button>
+            <span class="qty" data-qty>0</span>
+            <button type="button" data-action="inc" aria-label="Increase pallets, Red Bull Classic">+</button>
+          </div>
+        </div>
+        <div class="unit-group" data-unit="can">
+          <span class="unit-label">Cans</span>
+          <div class="stepper">
+            <button type="button" data-action="dec" aria-label="Decrease cans, Red Bull Classic">−</button>
+            <span class="qty" data-qty>0</span>
+            <button type="button" data-action="inc" aria-label="Increase cans, Red Bull Classic">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="can" data-id="diet">
+      <div class="can-top">
+        <svg class="can-icon" width="38" height="52" viewBox="0 0 38 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="g-diet" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#F1F3F7"/><stop offset="100%" stop-color="#B7BEC9"/>
+          </linearGradient></defs>
+          <rect x="4" y="6" width="30" height="42" rx="6" fill="url(#g-diet)" stroke="rgba(255,255,255,0.35)"/>
+          <ellipse cx="19" cy="6" rx="15" ry="3.5" fill="#FFFFFF"/>
+          <ellipse cx="19" cy="48" rx="15" ry="3" fill="#9AA2AD"/>
+          <rect x="4" y="26" width="30" height="2.5" fill="rgba(0,0,0,0.15)"/>
+          <path d="M9 12 L14 34" stroke="#2F6BFF" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+        </svg>
+        <div>
+          <div class="can-name">Red Bull Diet</div>
+          <div class="can-tag">No sugar, silver can</div>
+        </div>
+      </div>
+      <div class="units">
+        <div class="unit-group" data-unit="pallet">
+          <span class="unit-label">Pallets</span>
+          <div class="stepper">
+            <button type="button" data-action="dec" aria-label="Decrease pallets, Red Bull Diet">−</button>
+            <span class="qty" data-qty>0</span>
+            <button type="button" data-action="inc" aria-label="Increase pallets, Red Bull Diet">+</button>
+          </div>
+        </div>
+        <div class="unit-group" data-unit="can">
+          <span class="unit-label">Cans</span>
+          <div class="stepper">
+            <button type="button" data-action="dec" aria-label="Decrease cans, Red Bull Diet">−</button>
+            <span class="qty" data-qty>0</span>
+            <button type="button" data-action="inc" aria-label="Increase cans, Red Bull Diet">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="can" data-id="zero">
+      <div class="can-top">
+        <svg class="can-icon" width="38" height="52" viewBox="0 0 38 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="g-zero" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#3D414B"/><stop offset="100%" stop-color="#101216"/>
+          </linearGradient></defs>
+          <rect x="4" y="6" width="30" height="42" rx="6" fill="url(#g-zero)" stroke="rgba(255,255,255,0.2)"/>
+          <ellipse cx="19" cy="6" rx="15" ry="3.5" fill="#4A4E58"/>
+          <ellipse cx="19" cy="48" rx="15" ry="3" fill="#000000"/>
+          <rect x="4" y="26" width="30" height="2.5" fill="rgba(255,255,255,0.15)"/>
+          <path d="M9 12 L14 34" stroke="#E11B2C" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+        </svg>
+        <div>
+          <div class="can-name">Red Bull Zero Sugar</div>
+          <div class="can-tag">Zero sugar, black can</div>
+        </div>
+      </div>
+      <div class="units">
+        <div class="unit-group" data-unit="pallet">
+          <span class="unit-label">Pallets</span>
+          <div class="stepper">
+            <button type="button" data-action="dec" aria-label="Decrease pallets, Red Bull Zero Sugar">−</button>
+            <span class="qty" data-qty>0</span>
+            <button type="button" data-action="inc" aria-label="Increase pallets, Red Bull Zero Sugar">+</button>
+          </div>
+        </div>
+        <div class="unit-group" data-unit="can">
+          <span class="unit-label">Cans</span>
+          <div class="stepper">
+            <button type="button" data-action="dec" aria-label="Decrease cans, Red Bull Zero Sugar">−</button>
+            <span class="qty" data-qty>0</span>
+            <button type="button" data-action="inc" aria-label="Increase cans, Red Bull Zero Sugar">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="can" data-id="whitepeach">
+      <div class="can-top">
+        <svg class="can-icon" width="38" height="52" viewBox="0 0 38 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="g-peach" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#FBEFE3"/><stop offset="100%" stop-color="#EFC9A8"/>
+          </linearGradient></defs>
+          <rect x="4" y="6" width="30" height="42" rx="6" fill="url(#g-peach)" stroke="rgba(255,255,255,0.4)"/>
+          <ellipse cx="19" cy="6" rx="15" ry="3.5" fill="#FFF7EF"/>
+          <ellipse cx="19" cy="48" rx="15" ry="3" fill="#DDA97E"/>
+          <rect x="4" y="26" width="30" height="2.5" fill="rgba(255,255,255,0.5)"/>
+          <path d="M9 12 L14 34" stroke="#E8834A" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+        </svg>
+        <div>
+          <div class="can-name">Red Bull White Peach</div>
+          <div class="can-tag">Edition — peach</div>
+        </div>
+      </div>
+      <div class="units">
+        <div class="unit-group" data-unit="pallet">
+          <span class="unit-label">Pallets</span>
+          <div class="stepper">
+            <button type="button" data-action="dec" aria-label="Decrease pallets, Red Bull White Peach">−</button>
+            <span class="qty" data-qty>0</span>
+            <button type="button" data-action="inc" aria-label="Increase pallets, Red Bull White Peach">+</button>
+          </div>
+        </div>
+        <div class="unit-group" data-unit="can">
+          <span class="unit-label">Cans</span>
+          <div class="stepper">
+            <button type="button" data-action="dec" aria-label="Decrease cans, Red Bull White Peach">−</button>
+            <span class="qty" data-qty>0</span>
+            <button type="button" data-action="inc" aria-label="Increase cans, Red Bull White Peach">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="can" data-id="seablue">
+      <div class="can-top">
+        <svg class="can-icon" width="38" height="52" viewBox="0 0 38 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="g-sea" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#4A8FE0"/><stop offset="100%" stop-color="#0F3B84"/>
+          </linearGradient></defs>
+          <rect x="4" y="6" width="30" height="42" rx="6" fill="url(#g-sea)" stroke="rgba(255,255,255,0.25)"/>
+          <ellipse cx="19" cy="6" rx="15" ry="3.5" fill="#7BB4EF"/>
+          <ellipse cx="19" cy="48" rx="15" ry="3" fill="#0A2C63"/>
+          <rect x="4" y="26" width="30" height="2.5" fill="rgba(255,255,255,0.35)"/>
+          <path d="M9 12 L14 34" stroke="#FFC531" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+        </svg>
+        <div>
+          <div class="can-name">Red Bull Sea Blue</div>
+          <div class="can-tag">Edition — curuba</div>
+        </div>
+      </div>
+      <div class="units">
+        <div class="unit-group" data-unit="pallet">
+          <span class="unit-label">Pallets</span>
+          <div class="stepper">
+            <button type="button" data-action="dec" aria-label="Decrease pallets, Red Bull Sea Blue">−</button>
+            <span class="qty" data-qty>0</span>
+            <button type="button" data-action="inc" aria-label="Increase pallets, Red Bull Sea Blue">+</button>
+          </div>
+        </div>
+        <div class="unit-group" data-unit="can">
+          <span class="unit-label">Cans</span>
+          <div class="stepper">
+            <button type="button" data-action="dec" aria-label="Decrease cans, Red Bull Sea Blue">−</button>
+            <span class="qty" data-qty>0</span>
+            <button type="button" data-action="inc" aria-label="Increase cans, Red Bull Sea Blue">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="can" data-id="acai">
+      <div class="can-top">
+        <svg class="can-icon" width="38" height="52" viewBox="0 0 38 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="g-acai" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#9A5AA8"/><stop offset="100%" stop-color="#421A4D"/>
+          </linearGradient></defs>
+          <rect x="4" y="6" width="30" height="42" rx="6" fill="url(#g-acai)" stroke="rgba(255,255,255,0.25)"/>
+          <ellipse cx="19" cy="6" rx="15" ry="3.5" fill="#B87BC4"/>
+          <ellipse cx="19" cy="48" rx="15" ry="3" fill="#2E1136"/>
+          <rect x="4" y="26" width="30" height="2.5" fill="rgba(255,255,255,0.3)"/>
+          <path d="M9 12 L14 34" stroke="#FFC531" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+        </svg>
+        <div>
+          <div class="can-name">Red Bull Acai</div>
+          <div class="can-tag">Edition — açaí berry</div>
+        </div>
+      </div>
+      <div class="units">
+        <div class="unit-group" data-unit="pallet">
+          <span class="unit-label">Pallets</span>
+          <div class="stepper">
+            <button type="button" data-action="dec" aria-label="Decrease pallets, Red Bull Acai">−</button>
+            <span class="qty" data-qty>0</span>
+            <button type="button" data-action="inc" aria-label="Increase pallets, Red Bull Acai">+</button>
+          </div>
+        </div>
+        <div class="unit-group" data-unit="can">
+          <span class="unit-label">Cans</span>
+          <div class="stepper">
+            <button type="button" data-action="dec" aria-label="Decrease cans, Red Bull Acai">−</button>
+            <span class="qty" data-qty>0</span>
+            <button type="button" data-action="inc" aria-label="Increase cans, Red Bull Acai">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section-label">Your details</div>
+  <div class="details">
+    <div class="field">
+      <label for="name">Name / shop name</label>
+      <input id="name" type="text" placeholder="e.g. Ahmed — Marina Kiosk" autocomplete="name">
+    </div>
+    <div class="field">
+      <label for="phone">Phone number</label>
+      <input id="phone" type="tel" placeholder="01xxxxxxxxx" autocomplete="tel">
+    </div>
+    <div class="field">
+      <label for="location">Location / area</label>
+      <input id="location" type="text" placeholder="e.g. Sakkala, next to Metro Market" autocomplete="street-address">
+      <button type="button" id="gpsBtn" class="gps-btn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+        <span id="gpsBtnLabel">Share my exact GPS location</span>
+      </button>
+      <div class="gps-status" id="gpsStatus"></div>
+    </div>
+    <div class="note">Your order is sent as a WhatsApp message — no account or app download needed on your end.</div>
+    <div class="error-msg" id="errorMsg">Add at least one pallet or can, and your name, before sending.</div>
+  </div>
+</div>
+
+<div class="bar">
+  <div class="bar-inner">
+    <div class="count-pill">
+      <div class="n" id="totalPallets">0</div>
+      <div class="l">Pallets</div>
+    </div>
+    <div class="count-pill">
+      <div class="n" id="totalCans">0</div>
+      <div class="l">Cans</div>
+    </div>
+    <button class="send-btn" id="sendBtn">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.31-1.39c1.44.79 3.06 1.2 4.71 1.2h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2m0 1.67c2.2 0 4.26.86 5.82 2.42a8.183 8.183 0 012.41 5.83c0 4.55-3.7 8.25-8.25 8.25-1.44 0-2.86-.38-4.1-1.1l-.29-.17-3.05.8.81-2.97-.19-.3a8.222 8.222 0 01-1.26-4.4c.01-4.55 3.71-8.36 8.25-8.36z"/></svg>
+      Send order
+    </button>
+  </div>
+</div>
+
+<script>
+const WHATSAPP_NUMBER = "201557513999";
+
+const flavorNames = {
+  classic: "Red Bull Classic",
+  diet: "Red Bull Diet",
+  zero: "Red Bull Zero Sugar",
+  whitepeach: "Red Bull White Peach",
+  seablue: "Red Bull Sea Blue",
+  acai: "Red Bull Acai",
+};
+
+const cooler = document.getElementById('cooler');
+const qty = Object.fromEntries(Object.keys(flavorNames).map(id => [id, { pallet: 0, can: 0 }]));
+
+function updateCan(id){
+  const el = cooler.querySelector(`.can[data-id="${id}"]`);
+  el.querySelector('[data-unit="pallet"] [data-qty]').textContent = qty[id].pallet;
+  el.querySelector('[data-unit="can"] [data-qty]').textContent = qty[id].can;
+  el.dataset.active = (qty[id].pallet > 0 || qty[id].can > 0) ? "true" : "false";
+}
+
+function updateTotals(){
+  let pallets = 0, cans = 0;
+  Object.values(qty).forEach(q => { pallets += q.pallet; cans += q.can; });
+  document.getElementById('totalPallets').textContent = pallets;
+  document.getElementById('totalCans').textContent = cans;
+}
+
+cooler.addEventListener('click', (e) => {
+  const btn = e.target.closest('button[data-action]');
+  if(!btn) return;
+  const id = btn.closest('.can').dataset.id;
+  const unit = btn.closest('.unit-group').dataset.unit;
+  if(btn.dataset.action === 'inc') qty[id][unit]++;
+  if(btn.dataset.action === 'dec') qty[id][unit] = Math.max(0, qty[id][unit] - 1);
+  updateCan(id);
+  updateTotals();
+});
+
+let gpsCoords = null;
+const gpsBtn = document.getElementById('gpsBtn');
+const gpsBtnLabel = document.getElementById('gpsBtnLabel');
+const gpsStatus = document.getElementById('gpsStatus');
+
+gpsBtn.addEventListener('click', () => {
+  if(!navigator.geolocation){
+    gpsStatus.textContent = "Location isn't supported on this browser.";
+    gpsStatus.className = 'gps-status err';
+    return;
+  }
+  gpsBtnLabel.textContent = 'Getting your location…';
+  gpsStatus.textContent = '';
+  gpsStatus.className = 'gps-status';
+
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      gpsCoords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+      gpsBtn.dataset.state = 'done';
+      gpsBtnLabel.textContent = 'Location added ✓';
+      gpsStatus.textContent = 'Your exact location will be included with the order.';
+      gpsStatus.className = 'gps-status ok';
+    },
+    (err) => {
+      gpsBtnLabel.textContent = 'Share my exact GPS location';
+      gpsStatus.textContent = 'Could not get location — please allow location access, or just type your area above.';
+      gpsStatus.className = 'gps-status err';
+    },
+    { enableHighAccuracy: true, timeout: 10000 }
+  );
+});
+
+const errorMsg = document.getElementById('errorMsg');
+
+document.getElementById('sendBtn').addEventListener('click', () => {
+  const name = document.getElementById('name').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const location = document.getElementById('location').value.trim();
+  const items = Object.keys(flavorNames).filter(id => qty[id].pallet > 0 || qty[id].can > 0);
+
+  if(items.length === 0 || !name){
+    errorMsg.classList.add('show');
+    return;
+  }
+  errorMsg.classList.remove('show');
+
+  let msg = `New order — Red Bull Hurghada\n\nName: ${name}\n`;
+  if(phone) msg += `Phone: ${phone}\n`;
+  if(location) msg += `Location: ${location}\n`;
+  if(gpsCoords) msg += `Map: https://maps.google.com/?q=${gpsCoords.lat},${gpsCoords.lng}\n`;
+  msg += `\nItems:\n`;
+
+  let totalPallets = 0, totalCans = 0;
+  items.forEach(id => {
+    const { pallet, can } = qty[id];
+    const parts = [];
+    if(pallet > 0) parts.push(`${pallet} pallet${pallet > 1 ? 's' : ''}`);
+    if(can > 0) parts.push(`${can} can${can > 1 ? 's' : ''}`);
+    msg += `• ${flavorNames[id]} — ${parts.join(', ')}\n`;
+    totalPallets += pallet;
+    totalCans += can;
+  });
+
+  msg += `\nTotal: ${totalPallets} pallet${totalPallets !== 1 ? 's' : ''}, ${totalCans} can${totalCans !== 1 ? 's' : ''}`;
+
+  const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank');
+});
+</script>
+</body>
+</html>
